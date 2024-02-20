@@ -1,4 +1,5 @@
-import turtle, pandas
+import pandas
+import turtle
 
 screen = turtle.Screen()
 screen.title('U.S. States Game')
@@ -22,8 +23,11 @@ states_guessed = []
 
 while len(states_guessed) < num_states:
     # Get input from user and capitalize
-    answer = screen.textinput(title=f'{score}/{num_states}', prompt='What\'s another state\'s name?')
-    answer = answer.capitalize()
+    answer = screen.textinput(title=f'{score}/{num_states} States Correct', prompt='What\'s another state\'s name?')
+    answer = answer.title()
+
+    if answer == 'Exit':
+        break
 
     # pull the x and y coordinates of the state and write to the map
     # is_in_list = answer in states_data_list
@@ -38,5 +42,16 @@ while len(states_guessed) < num_states:
         states_guessed.append(answer)
         score += 1
 
+# create csv file of missed states
+# missed_states = []
+# for state in all_states_data:
+#     if state not in states_guessed:
+#         missed_states.append(state)
+
+missed_states = [state for state in all_states_data if state not in states_guessed]
+
+missed_states_data_frame = pandas.DataFrame(missed_states)
+missed_states_data_frame.to_csv('./missed_states.csv')
+
 # screen.exitonclick()
-turtle.mainloop()
+# turtle.mainloop()
